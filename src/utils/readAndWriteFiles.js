@@ -13,6 +13,13 @@ const read = async () => {
   }
 };
 
+const getTalker = async (id) => {
+    const talkers = await read();
+    const talkerId = talkers.find((talker) => talker.id === Number(id));
+    return talkerId;
+};
+
 module.exports = {
   read,
+  getTalker,
 };
