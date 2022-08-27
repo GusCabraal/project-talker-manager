@@ -5,6 +5,7 @@ const {
     addTalker,
     updateTalker,
     deleteTalker,
+    searchTalkers,
 } = require('../utils/readAndWriteFiles');
 const talkerExists = require('../middlewares/talkerExists');
 const validateToken = require('../middlewares/validateToken');
@@ -21,20 +22,27 @@ talkerRouter.get('/', async (request, response) => {
     response.status(200).json(talkers);
 });
 
+talkerRouter.get('/search', validateToken, async (request, response) => {
+    const { q } = request.query;
+    const talkers = await searchTalkers(q);
+    response.status(200).json(talkers);
+});
+
 talkerRouter.get('/:id', talkerExists, async (request, response) => {
     const { id } = request.params;
     const talker = await getTalker(id);
     response.status(200).json(talker);
 });
 
-talkerRouter.delete('/:id', talkerExists, validateToken, async (request, response) => {
+talkerRouter.use(validateToken);
+
+talkerRouter.delete('/:id', talkerExists, async (request, response) => {
     const { id } = request.params;
     await deleteTalker(id);
     response.status(204).json({});
 });
 
 talkerRouter.use(
-    validateToken,
     nameValidation,
     ageValidation,
     talkValidation,
