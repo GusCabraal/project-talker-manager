@@ -1,5 +1,11 @@
 const express = require('express');
-const { read, getTalker, addTalker, updateTalker } = require('../utils/readAndWriteFiles');
+const {
+    read,
+    getTalker,
+    addTalker,
+    updateTalker,
+    deleteTalker,
+} = require('../utils/readAndWriteFiles');
 const talkerExists = require('../middlewares/talkerExists');
 const validateToken = require('../middlewares/validateToken');
 const nameValidation = require('../middlewares/nameValidation');
@@ -19,6 +25,12 @@ talkerRouter.get('/:id', talkerExists, async (request, response) => {
     const { id } = request.params;
     const talker = await getTalker(id);
     response.status(200).json(talker);
+});
+
+talkerRouter.delete('/:id', talkerExists, validateToken, async (request, response) => {
+    const { id } = request.params;
+    await deleteTalker(id);
+    response.status(204).json({});
 });
 
 talkerRouter.use(
