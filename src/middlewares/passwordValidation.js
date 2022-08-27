@@ -7,7 +7,7 @@ const passwordValidation = (req, res, next) => {
     if (passwordLength < 6) {
         return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
     }
-    return next();
+    next();
 };
 
 module.exports = passwordValidation;

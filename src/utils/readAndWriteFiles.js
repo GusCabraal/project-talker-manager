@@ -19,7 +19,23 @@ const getTalker = async (id) => {
     return talkerId;
 };
 
+const addTalker = async (talker) => {
+    const { name, age, talk } = talker;
+    const talkers = await read();
+    const lastTalkerId = talkers[talkers.length - 1].id;
+    const newTalker = {
+      name,
+      age,
+      talk,
+      id: lastTalkerId + 1,
+    };
+    talkers.push(newTalker);
+    await fs.writeFile(filename, JSON.stringify(talkers));
+    return newTalker;
+};
+
 module.exports = {
   read,
   getTalker,
+  addTalker,
 };
