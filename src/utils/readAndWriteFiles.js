@@ -34,8 +34,26 @@ const addTalker = async (talker) => {
     return newTalker;
 };
 
+const updateTalker = async (id, talker) => {
+    const talkers = await read();
+    const { name, age, talk } = talker;
+    talkers.forEach((el, i) => {
+      if (el.id === Number(id)) {
+        talkers[i].name = name;
+        talkers[i].age = age;
+        talkers[i].talk = talk;
+      }
+    });
+    await fs.writeFile(filename, JSON.stringify(talkers));
+    return {
+      id: Number(id),
+      ...talker,
+    };
+};
+
 module.exports = {
   read,
   getTalker,
   addTalker,
+  updateTalker,
 };

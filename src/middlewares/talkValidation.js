@@ -1,6 +1,6 @@
 // middlewares/validateDescription.js
 const validateTalk = (talkValue, res, value) => {
-    if (!talkValue) {
+    if (!talkValue && talkValue !== 0) {
       return res.status(400).json(
         { message: `O campo "${value}" é obrigatório` },
       );

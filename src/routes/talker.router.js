@@ -1,5 +1,5 @@
 const express = require('express');
-const { read, getTalker, addTalker } = require('../utils/readAndWriteFiles');
+const { read, getTalker, addTalker, updateTalker } = require('../utils/readAndWriteFiles');
 const talkerExists = require('../middlewares/talkerExists');
 const validateToken = require('../middlewares/validateToken');
 const nameValidation = require('../middlewares/nameValidation');
@@ -34,6 +34,12 @@ talkerRouter.post('/', async (request, response) => {
     const { body } = request;
     const talker = await addTalker(body);
     response.status(201).json(talker);
+});
+
+talkerRouter.put('/:id', async (request, response) => {
+    const { id } = request.params;
+    const talker = await updateTalker(id, request.body);
+    response.status(200).json(talker);
 });
 
 module.exports = talkerRouter;
